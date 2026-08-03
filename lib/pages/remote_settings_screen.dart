@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:orange_tv_remote_app/services/local_app_settings.dart';
 import 'package:orange_tv_remote_app/services/device_http_client.dart';
-import 'package:ping_discover_network/ping_discover_network.dart';
-import 'package:wifi/wifi.dart';
+// import 'package:ping_discover_network/ping_discover_network.dart';
+// import 'package:wifi/wifi.dart';
 
 class RemoteSettingsScreen extends StatefulWidget {
   @override
@@ -73,7 +73,7 @@ class _RemoteSettingsScreenState extends State<RemoteSettingsScreen> {
             title: new Text(title),
             content: new Text(message),
             actions: <Widget>[
-              new FlatButton(
+              new TextButton(
                   child: new Text("Fermer"),
                   onPressed: () {
                     Navigator.of(context).pop();
@@ -85,6 +85,8 @@ class _RemoteSettingsScreenState extends State<RemoteSettingsScreen> {
   }
 
   void searchDeviceOnNetwork(context) async {
+
+    /*
 
     final String ip = await Wifi.ip;
     String subnet = ip.substring(0, ip.lastIndexOf('.'));
@@ -132,6 +134,8 @@ class _RemoteSettingsScreenState extends State<RemoteSettingsScreen> {
         );
       }
     });
+
+    */
   }
 
   @override
@@ -215,7 +219,7 @@ class _RemoteSettingsScreenState extends State<RemoteSettingsScreen> {
                         color: Colors.grey[800],
                       ),
                       enabledBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(color: Colors.grey[800]),
+                        borderSide: BorderSide(color: Colors.grey[800]!),
                       ),
                       focusedBorder: UnderlineInputBorder(
                         borderSide: BorderSide(color: Colors.white),
@@ -227,12 +231,14 @@ class _RemoteSettingsScreenState extends State<RemoteSettingsScreen> {
                   ),
                 ),
                 SizedBox(height: 20),
-                FlatButton.icon(
+                TextButton.icon(
                   onPressed: () {
                     searchDeviceOnNetwork(context);
                   },
-                  color: Colors.green,
-                  padding: EdgeInsets.all(10.0),
+                  style: TextButton.styleFrom(
+                    backgroundColor: Colors.green,
+                    padding: EdgeInsets.all(10.0),
+                  ),
                   label: Text(
                     'Recherche automatique',
                     style: TextStyle(

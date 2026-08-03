@@ -6,11 +6,11 @@ abstract class ThemeAbstract {
   static const int DARK_THEME = 1;
   static const int CLEAR_THEME = 2;
 
-  Color buttonsColor;
-  Color remoteControllerBackgroundColor;
-  Color toolBarBackgroundColor;
+  late Color buttonsColor;
+  late Color remoteControllerBackgroundColor;
+  late Color toolBarBackgroundColor;
 
-  int themeId;
+  late int themeId;
 
   Color getButtonsColor() {
     return this.buttonsColor;

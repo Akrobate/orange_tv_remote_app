@@ -16,9 +16,9 @@ class _RemoteControllerScreenState extends State<RemoteControllerScreen> {
 
   final LocalAppSettings appSettings = LocalAppSettings();
   final DeviceHttpClient device = DeviceHttpClient();
-  ThemeAbstract theme;
-  Color appBarBackgroundColor;
-  Color backgroundColor;
+  late ThemeAbstract theme;
+  late Color appBarBackgroundColor;
+  late Color backgroundColor;
   int templateType = 1;
 
   initState() {

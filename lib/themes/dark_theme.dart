@@ -6,7 +6,7 @@ class DarkTheme extends ThemeAbstract {
 
   Color buttonsColor = Colors.white;
   Color remoteControllerBackgroundColor = Colors.black;
-  Color toolBarBackgroundColor = Colors.grey[850];
+  Color toolBarBackgroundColor = Colors.grey[850] ?? Colors.grey;
   int themeId = ThemeAbstract.DARK_THEME;
 
 }

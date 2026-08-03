@@ -13,8 +13,8 @@ class SimpleRemoteController extends StatelessWidget {
   final ThemeAbstract theme;
 
   SimpleRemoteController({
-    this.device,
-    this.theme,
+    required this.device,
+    required this.theme,
   });
 
   controllerButtonPressed(int command) {
@@ -128,11 +128,13 @@ class SimpleRemoteController extends StatelessWidget {
                   constraints: BoxConstraints.expand(),
                   child: FittedBox(
                     fit: BoxFit.fitWidth,
-                    child: FlatButton(
+                    child: TextButton(
                       onPressed: () {
                         controllerButtonPressed(DeviceHttpParams.OK);
                       },
-                      padding: EdgeInsets.all(0),
+                      style: TextButton.styleFrom(
+                        padding: const EdgeInsets.all(0),
+                      ),
                       child: Text(
                           'Ok',
                           style: TextStyle(
@@ -180,11 +182,13 @@ class SimpleRemoteController extends StatelessWidget {
                   constraints: BoxConstraints.expand(),
                   child: FittedBox(
                     fit: BoxFit.fitWidth,
-                    child: FlatButton(
+                    child: TextButton(
                       onPressed: () {
                         controllerButtonPressed(DeviceHttpParams.MENU);
                       },
-                      padding: EdgeInsets.all(0),
+                      style: TextButton.styleFrom(
+                        padding: const EdgeInsets.all(0),
+                      ),
                       child: Text(
                           'menu',
                           style: TextStyle(
@@ -223,11 +227,13 @@ class SimpleRemoteController extends StatelessWidget {
                   constraints: BoxConstraints.expand(),
                   child: FittedBox(
                     fit: BoxFit.fitWidth,
-                    child: FlatButton(
+                    child: TextButton(
                       onPressed: () {
                         controllerButtonPressed(DeviceHttpParams.VOD);
                       },
-                      padding: EdgeInsets.all(0),
+                      style: TextButton.styleFrom(
+                        padding: const EdgeInsets.all(0),
+                      ),
                       child: Text(
                           'VOD',
                           style: TextStyle(

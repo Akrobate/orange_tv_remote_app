@@ -14,11 +14,11 @@ class LocalAppSettings {
   static const int CLEAR_THEME = 2;
   static const int DEFAULT_THEME = LocalAppSettings.DARK_THEME;
 
-  String deviceIp;
-  int typeRemoteSelected;
-  int typeRemoteThemeSelected;
-  bool deviceFound;
-  bool firstAppLaunch;
+  late String deviceIp;
+  late int typeRemoteSelected;
+  late int typeRemoteThemeSelected;
+  late bool deviceFound;
+  late bool firstAppLaunch;
 
   factory LocalAppSettings() {
     return _instance;

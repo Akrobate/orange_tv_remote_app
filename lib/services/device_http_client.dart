@@ -1,11 +1,10 @@
-import 'package:http/http.dart';
-import 'package:query_params/query_params.dart';
+import 'package:http/http.dart' as http;
 import 'package:orange_tv_remote_app/constants/device_http_params.dart';
 import 'dart:convert';
 
 class DeviceHttpClient {
 
-  String deviceIp;
+  late String deviceIp;
   final String devicePort = '8080';
 
 
@@ -14,63 +13,62 @@ class DeviceHttpClient {
   }
 
   Future<void> command(int mode, int command) async {
+    if (deviceIp.isEmpty) return;
 
-    // Example of command to send
-    // http://ip_livebox_tv:8080/remoteControl/cmd?operation=01&key=code_touche&mode=numéro_mode
+    // Construction propre de l'URL avec Uri.http
+    final uri = Uri.http('$deviceIp:$devicePort', '/remoteControl/cmd', {
+      'operation': '01',
+      'key': command.toString(),
+      'mode': mode.toString(),
+    });
 
-    URLQueryParams queryParams = new URLQueryParams();
-
-    queryParams.append('operation', '01');
-    queryParams.append('key', command);
-    queryParams.append('mode', mode);
-
-    String queryParamsString = queryParams.toString();
-
-    try{
-      await get('http://$deviceIp:$devicePort/remoteControl/cmd?$queryParamsString');
+    try {
+      await http.get(uri);
     } catch (error) {
-      print(error);
+      print('Error sending command: $error');
     }
   }
 
 
-  Future<Map> getInfo() async {
+  Future<Map<String, dynamic>?> getInfo() async {
+    if (deviceIp.isEmpty) return null;
 
-    // Example of command to get device info
-    // http://192.168.1.12:8080/remoteControl/cmd?operation=10
-
-    Map response;
-
-    URLQueryParams queryParams = new URLQueryParams();
-    queryParams.append('operation',"10");
-    String queryParamsString = queryParams.toString();
+    final uri = Uri.http('$deviceIp:$devicePort', '/remoteControl/cmd', {
+      'operation': '10',
+    });
 
     try {
-      Response response = await get('http://$deviceIp:$devicePort/remoteControl/cmd?$queryParamsString');
-      response = jsonDecode(response.body);
-    } catch(error) {
-      print(error);
+      final response = await http.get(uri);
+      if (response.statusCode == 200) {
+        return jsonDecode(response.body) as Map<String, dynamic>;
+      }
+    } catch (error) {
+      print('Error getting device info: $error');
     }
-    return response;
+    return null;
   }
 
   Future<bool> checkDevice(String deviceIpString) async {
+    if (deviceIpString.isEmpty) return false;
 
     bool returnValue = false;
 
-    URLQueryParams queryParams = new URLQueryParams();
-    queryParams.append('operation', '10');
-    String queryParamsString = queryParams.toString();
-    print('http://$deviceIpString:$devicePort/remoteControl/cmd?$queryParamsString');
+    final uri = Uri.http('$deviceIpString:$devicePort', '/remoteControl/cmd', {
+      'operation': '10',
+    });
+
+    print(uri.toString());
+
     try {
-      Response response = await get('http://$deviceIpString:$devicePort/remoteControl/cmd?$queryParamsString')
-        .timeout(const Duration(seconds: 5));
-      Map result = jsonDecode(response.body);
-      if (result['result']['message'] == 'ok') {
-        returnValue = true;
+      final response = await http.get(uri).timeout(const Duration(seconds: 5));
+      if (response.statusCode == 200) {
+        final Map<String, dynamic> result = jsonDecode(response.body);
+        if (result['result'] != null && result['result']['message'] == 'ok') {
+          returnValue = true;
+        }
       }
-    } catch(error) {
-      print(error);
+    } catch (error) {
+      print('Error checking device: $error');
     }
 
     return returnValue;
