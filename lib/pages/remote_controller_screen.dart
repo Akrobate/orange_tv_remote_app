@@ -49,18 +49,22 @@ class _RemoteControllerScreenState extends State<RemoteControllerScreen> {
           title: Text('OrangeTV télécommande'),
           centerTitle: true,
           backgroundColor: appBarBackgroundColor,
+          foregroundColor: Colors.white,
           elevation: 0.0,
           actions: <Widget>[
             // action button
             IconButton(
               icon: Icon(Icons.settings),
-              onPressed: () {
-                Navigator.pushNamed(context, '/settings_screen');
+              onPressed: () async {
+                await Navigator.pushNamed(context, '/settings_screen');
+                setState(() {});
               },
             ),
           ],
         ),
-        body: templateType == 1 ? SimpleRemoteController(device: device, theme: theme) : AdvancedRemoteController(device: device, theme: theme),
+        body: SafeArea(
+          child: templateType == 1 ? SimpleRemoteController(device: device, theme: theme) : AdvancedRemoteController(device: device, theme: theme),
+        ),
     );
   }
 }

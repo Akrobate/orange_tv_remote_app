@@ -21,7 +21,6 @@ dependencies:
     sdk: flutter
   shared_preferences: ^2.2.3
   http: ^1.2.1
-  network_tools: ^6.0.0
   network_info_plus: ^6.0.0
   connectivity_plus: ^6.0.0
   # The following adds the Cupertino Icons font to your application.
@@ -29,8 +28,23 @@ dependencies:
   cupertino_icons: ^1.0.8
 
 dev_dependencies:
+  flutter_launcher_icons: ^0.14.4
   flutter_test:
     sdk: flutter
+
+# App launcher icon configuration (run: dart run flutter_launcher_icons)
+flutter_launcher_icons:
+  image_path: "assets/icon/app_icon.png"
+  android: true
+  min_sdk_android: 21
+  adaptive_icon_background: "#12243B"
+  adaptive_icon_foreground: "assets/icon/app_icon.png"
+  ios: true
+  remove_alpha_ios: true
+  web:
+    generate: true
+    background_color: "#ffffff"
+    theme_color: "#12243B"
 
 
 # For information on the generic Dart part of this file, see the

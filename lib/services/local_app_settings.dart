@@ -14,17 +14,27 @@ class LocalAppSettings {
   static const int CLEAR_THEME = 2;
   static const int DEFAULT_THEME = LocalAppSettings.DARK_THEME;
 
-  late String deviceIp;
-  late int typeRemoteSelected;
-  late int typeRemoteThemeSelected;
-  late bool deviceFound;
-  late bool firstAppLaunch;
+  String deviceIp = '';
+  int typeRemoteSelected = DEFAULT_REMOTE_CONTROLLER;
+  int typeRemoteThemeSelected = DEFAULT_THEME;
+  bool deviceFound = false;
+  bool firstAppLaunch = true;
 
   factory LocalAppSettings() {
     return _instance;
   }
 
   LocalAppSettings._internal();
+
+  /// Resets in-memory state so unit tests can start from a clean singleton.
+  void resetForTest() {
+    preferencesInstance = null;
+    deviceIp = '';
+    typeRemoteSelected = DEFAULT_REMOTE_CONTROLLER;
+    typeRemoteThemeSelected = DEFAULT_THEME;
+    deviceFound = false;
+    firstAppLaunch = true;
+  }
 
   Future<void> init() async {
     preferencesInstance = await SharedPreferences.getInstance();
@@ -56,28 +66,28 @@ class LocalAppSettings {
   }
 
   void setDeviceIp(String _deviceIp) {
-    preferencesInstance.setString('deviceIp', _deviceIp);
     deviceIp = _deviceIp;
+    preferencesInstance?.setString('deviceIp', _deviceIp);
   }
 
   void setTypeRemoteSelected(int _typeRemoteSelected) {
-    preferencesInstance.setInt('typeRemoteSelected', _typeRemoteSelected);
     typeRemoteSelected = _typeRemoteSelected;
+    preferencesInstance?.setInt('typeRemoteSelected', _typeRemoteSelected);
   }
 
   void setTypeRemoteThemeSelected(int _typeRemoteThemeSelected) {
-    preferencesInstance.setInt('typeRemoteThemeSelected', _typeRemoteThemeSelected);
     typeRemoteThemeSelected = _typeRemoteThemeSelected;
+    preferencesInstance?.setInt('typeRemoteThemeSelected', _typeRemoteThemeSelected);
   }
 
   void setDeviceFound(bool _deviceFound) {
-    preferencesInstance.setBool('deviceFound', _deviceFound);
     deviceFound = _deviceFound;
+    preferencesInstance?.setBool('deviceFound', _deviceFound);
   }
 
   void setFirstAppLaunch(bool _firstAppLaunch) {
-    preferencesInstance.setBool('firstAppLaunch', _firstAppLaunch);
     firstAppLaunch = _firstAppLaunch;
+    preferencesInstance?.setBool('firstAppLaunch', _firstAppLaunch);
   }
 
 }

@@ -3,19 +3,21 @@ import 'package:orange_tv_remote_app/constants/device_http_params.dart';
 import 'dart:convert';
 
 class DeviceHttpClient {
+  DeviceHttpClient({http.Client? httpClient})
+      : _httpClient = httpClient ?? http.Client();
 
-  late String deviceIp;
+  final http.Client _httpClient;
+
+  String deviceIp = '';
   final String devicePort = '8080';
 
-
-  Future<void> commandModeSimple(int command) async {
-    return this.command(DeviceHttpParams.MODE_SIMPLE, command);
+  Future<void> commandModeSimple(int key) async {
+    return this.command(DeviceHttpParams.MODE_SIMPLE, key);
   }
 
   Future<void> command(int mode, int command) async {
     if (deviceIp.isEmpty) return;
 
-    // Construction propre de l'URL avec Uri.http
     final uri = Uri.http('$deviceIp:$devicePort', '/remoteControl/cmd', {
       'operation': '01',
       'key': command.toString(),
@@ -23,12 +25,11 @@ class DeviceHttpClient {
     });
 
     try {
-      await http.get(uri);
+      await _httpClient.get(uri);
     } catch (error) {
       print('Error sending command: $error');
     }
   }
-
 
   Future<Map<String, dynamic>?> getInfo() async {
     if (deviceIp.isEmpty) return null;
@@ -38,7 +39,7 @@ class DeviceHttpClient {
     });
 
     try {
-      final response = await http.get(uri);
+      final response = await _httpClient.get(uri);
       if (response.statusCode == 200) {
         return jsonDecode(response.body) as Map<String, dynamic>;
       }
@@ -48,30 +49,29 @@ class DeviceHttpClient {
     return null;
   }
 
-  Future<bool> checkDevice(String deviceIpString) async {
+  Future<bool> checkDevice(
+    String deviceIpString, {
+    Duration timeout = const Duration(seconds: 5),
+  }) async {
     if (deviceIpString.isEmpty) return false;
-
-    bool returnValue = false;
 
     final uri = Uri.http('$deviceIpString:$devicePort', '/remoteControl/cmd', {
       'operation': '10',
     });
 
-    print(uri.toString());
-
     try {
-      final response = await http.get(uri).timeout(const Duration(seconds: 5));
+      final response = await _httpClient.get(uri).timeout(timeout);
       if (response.statusCode == 200) {
         final Map<String, dynamic> result = jsonDecode(response.body);
         if (result['result'] != null && result['result']['message'] == 'ok') {
-          returnValue = true;
+          return true;
         }
       }
-    } catch (error) {
-      print('Error checking device: $error');
+    } catch (_) {
+      // A closed port, timeout or non-box service just means "not the box".
     }
 
-    return returnValue;
+    return false;
   }
 
   void setDeviceIp(String _deviceIp) {
@@ -85,5 +85,4 @@ class DeviceHttpClient {
   String getDevicePort() {
     return devicePort;
   }
-
 }
