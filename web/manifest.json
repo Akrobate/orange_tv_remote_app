@@ -1,11 +1,11 @@
 {
-    "name": "orange_tv_remote_app",
-    "short_name": "orange_tv_remote_app",
+    "name": "Télécommande TV",
+    "short_name": "Télécommande TV",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#ffffff",
     "theme_color": "#12243B",
-    "description": "A new Flutter project.",
+    "description": "Remote control for Orange TV set-top boxes.",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [

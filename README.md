@@ -138,6 +138,23 @@ flutter test
 4. Go back — the remote screen updates immediately.
 
 
+## Continuous delivery (GitHub Actions)
+
+Pushing a version tag builds a release APK and publishes it as a GitHub Release (downloadable from the Releases page — no Play Store involved).
+
+```bash
+git tag v1.0.0
+git push origin v1.0.0
+```
+
+- Workflow: [`.github/workflows/release.yml`](.github/workflows/release.yml)
+- Trigger: tags matching `v*` (e.g. `v1.0.0`, `v1.2.3`)
+- Artifact: `telecommande-tv-<version>.apk` attached to the release
+- Version: taken from the tag (`v1.2.3` → `1.2.3`), build number = GitHub run number
+
+No signing secrets are required. The APK is signed with the debug key, which is fine for direct install / sideload.
+
+
 ## Tests
 
 The project includes unit and widget tests covering:
@@ -183,7 +200,7 @@ dart run flutter_launcher_icons
 - Works only on the **local network** (no remote / internet control).
 - Discovery scans the phone’s `/24` subnet; if the box is on another subnet/VLAN, enter the IP manually.
 - The box must expose the classic Orange remote HTTP API on port **8080**.
-- Release APKs currently use the default debug signing unless you configure your own keystore.
+- Release APKs use debug signing (suitable for GitHub sideload installs, not Play Store).
 
 
 ## License
