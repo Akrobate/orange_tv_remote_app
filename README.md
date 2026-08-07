@@ -1,5 +1,7 @@
 # Orange TV Remote
 
+[![CI](https://github.com/Akrobate/orange_tv_remote_app/actions/workflows/ci.yml/badge.svg)](https://github.com/Akrobate/orange_tv_remote_app/actions/workflows/ci.yml)
+
 A Flutter app that turns your phone into a remote control for Orange Livebox / Orange TV set-top boxes on your local Wi‑Fi network.
 
 Commands are sent over HTTP to the box’s built-in remote control API (`:8080`), so the phone and the box must be on the **same local network**.
@@ -138,7 +140,16 @@ flutter test
 4. Go back — the remote screen updates immediately.
 
 
-## Continuous delivery (GitHub Actions)
+## Continuous integration & delivery (GitHub Actions)
+
+### Tests (CI)
+
+On every push and pull request to `main`, `master`, or `develop`, GitHub Actions runs `flutter test`.
+
+- Workflow: [`.github/workflows/ci.yml`](.github/workflows/ci.yml)
+- Badge above reflects the latest run status
+
+### Release APK (CD)
 
 Pushing a version tag builds a release APK and publishes it as a GitHub Release (downloadable from the Releases page — no Play Store involved).
 
